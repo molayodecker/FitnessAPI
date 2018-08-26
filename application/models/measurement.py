@@ -11,5 +11,7 @@ class MeasurementModel(database.Model):
     hips = database.Column(database.Integer)
     arms = database.Column(database.Integer)
     posted_at = database.Column(database.DateTime)
-    user_id = database.Column(database.Integer, database.ForeignKey('users.id'))
+    user_id = database.Column(database.Integer, database.ForeignKey('users.id'), nullable=False)
+    
+    # define relationship
     user_measurement = database.relationship('UserModel', backref= 'measurement')

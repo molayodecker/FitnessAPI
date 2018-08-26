@@ -28,6 +28,9 @@ from controllers.auth import Controller
 from helpers.auth import Tokenizer
 from flask_essentials import database, marshmallow
 from resources.user import User, UserList
+from resources.measurement import Measurement
+from resources.user_profile import UserProfile
+from resources.photo import Photo
 
 
 app = Flask(__name__)
@@ -39,48 +42,6 @@ app.secret_key = 'f7yD5o~5%rw28H.'
 Tokenizer.init_app(app)
 api = Api(app)
 
-
-class PhotoSchema(ModelSchema):
-    class Meta:
-        model = PhotoModel
-        strict = True
-        sqla_session = database.session
-
-
-class ProgressPhotoSchema(ModelSchema):
-    class Meta:
-        model = ProgressPhotoModel
-        strict = True
-        sqla_session = database.session
-
-
-class MeasurementSchema(ModelSchema):
-    class Meta:
-        model = MeasurementModel
-        strict = True
-        sqla_session = database.session
-
-
-class FoodSchema(ModelSchema):
-    class Meta:
-        model = FoodModel
-        strict = True
-        sqla_session = database.session
-
-
-class MealPlanSchema(ModelSchema):
-    class Meta:
-        model = MealPlanModel
-        strict = True
-        sqla_session = database.session
-
-
-class FoodImageSchema(ModelSchema):
-    class Meta:
-        model = FoodImageModel
-        strict = True
-        sqla_session = database.session
-
     
 class MealCategorySchema(ModelSchema):
     class Meta:
@@ -90,29 +51,6 @@ class MealCategorySchema(ModelSchema):
 
 
        
-
-class UserProfile(Resource):
-    @Tokenizer.token_required
-    def get(self, logged_in_user):
-        if self['public_id']:
-            print('Cont')
-        else:
-            raise ValueError('Unable to verify user')
-
-    
-    @use_args(UserProfileSchema(many = True))
-    @Tokenizer.token_required
-    def post(self,logged_in_user,args):
-        # print(self)
-        temp = Controller(UserModel).find_by_public_id(self['public_id'])
-        # if self['public_id']:
-        #     new_profile = UserProfileModel(age=10,gender="Female",email= "dominique@morgan.com",weight= 140,height=5.7,goal=120,calories=1200,loss=20,gain=40,user_id= self['id'])
-        #     database.session.add(new_profile)
-        #     database.session.commit()
-
-
-
-
 class UserLogin(Resource):
     def get(self):
         auth = request.authorization
@@ -173,6 +111,8 @@ api.add_resource(UserList, '/create_user')
 api.add_resource(User, '/user')
 api.add_resource(UserProfile, '/profile')
 api.add_resource(UserLogin, '/login')
+api.add_resource(Measurement,'/measurement')
+api.add_resource(Photo, '/photo')
 
 
 

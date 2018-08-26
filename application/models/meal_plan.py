@@ -7,4 +7,6 @@ class MealPlanModel(database.Model):
     date = database.Column(database.DateTime)
     notes = database.Column(database.String(255))
     user_id = database.Column(database.Integer, database.ForeignKey('users.id'))
+    
+    #relational Mapping
     user_meal = database.relationship('UserModel', backref= 'meal')

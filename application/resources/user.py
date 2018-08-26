@@ -6,14 +6,12 @@ from schemes.user import UserSchema
 from helpers.auth import Tokenizer
 from controllers.auth import Controller
 from webargs.flaskparser import use_args, use_kwargs
+from flask_essentials import database
 
-
+comtroller = Controller(UserModel) 
 class User(Resource):
     @Tokenizer.token_required
     def get(self, logged_in_user):
-        #users = Controller(UserProfileModel).find_all(self['id'])
-        users = UserProfileModel.query.filter_by(user_id = 3)
-        print(users)
         user = Controller(UserModel).find_by_public_id(self['public_id'])
         if not user:
             return jsonify({ 'message': 'No user found'})

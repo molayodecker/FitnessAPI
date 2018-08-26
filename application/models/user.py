@@ -10,3 +10,6 @@ class UserModel(database.Model):
     admin = database.Column(database.Boolean)
     created_at = database.Column(database.Date, nullable= True)
     userprofile = database.relationship('UserProfileModel', backref='users')
+    usermeasure = database.relationship('MeasurementModel', backref='users')
+    usermealplan= database.relationship('MealPlanModel', backref='users')
+    userphoto = database.relationship('PhotoModel', backref='users')
